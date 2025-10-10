@@ -1,0 +1,27 @@
+[
+  {
+    "id": "firefox",
+    "name": "Firefox",
+    "description": "A popular open-source web browser."
+  },
+  {
+    "id": "steam",
+    "name": "Steam",
+    "description": "Digital distribution platform for video games."
+  },
+  {
+    "id": "telegram-desktop",
+    "name": "Telegram",
+    "description": "A secure and fast messaging application."
+  },
+  {
+    "id": "git",
+    "name": "Git",
+    "description": "The standard for version control."
+  },
+  {
+    "id": "vscode",
+    "name": "Visual Studio Code",
+    "description": "A powerful, modern code editor from Microsoft."
+  }
+]

@@ -1,0 +1,61 @@
+body {
+    font-family: sans-serif;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #569cd6;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
+
+.container {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 20px;
+}
+
+.column {
+    flex: 1;
+}
+
+button {
+    background-color: #0e639c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #1177bb;
+}
+
+#log-output {
+    background-color: #252526;
+    border: 1px solid #333;
+    padding: 10px;
+    height: 200px;
+    overflow-y: scroll;
+    white-space: pre-wrap; /* Allows text to wrap */
+}
+#search-bar {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 15px;
+    background-color: #2a2d2e;
+    color: #d4d4d4;
+    border: 1px solid #333;
+    border-radius: 4px;
+}
+
+.description {
+    font-size: 0.8em;
+    color: #8c8c8c;
+    margin-top: -2px;
+    margin-left: 20px;
+}

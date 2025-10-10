@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Py Installer</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body onload="updatePackageList('')"> <h1>Linux Quick Installer</h1>
+
+    <div class="container">
+        <div class="column" id="distro-column">
+            <h2>Distribution</h2>
+            <input type="radio" id="apt" name="distro" value="1" checked>
+            <label for="apt">Debian / Ubuntu</label><br>
+            <input type="radio" id="dnf" name="distro" value="2">
+            <label for="dnf">Fedora</label><br>
+            <input type="radio" id="pacman" name="distro" value="3">
+            <label for="pacman">Arch / Manjaro</label><br>
+        </div>
+
+        <div class="column">
+            <h2>Packages</h2>
+            <input type="text" id="search-bar" onkeyup="updatePackageList(this.value)" placeholder="Search for packages...">
+            <div id="package-list"></div>
+        </div>
+    </div>
+
+    <button onclick="startInstallation()">Start Install</button>
+
+    <h2>Installation Log</h2>
+    <pre id="log-output"></pre>
+
+    <script>
+        // Expose this JavaScript function to Python for logging
+        eel.expose(add_to_log);
+        function add_to_log(message) {
+            const log = document.getElementById('log-output');
+            log.textContent += message + '\n';
+            log.scrollTop = log.scrollHeight; // Auto-scroll to bottom
+        }
+
+        // This function is called when the user types in the search bar
+        async function updatePackageList(searchTerm) {
+            const packageListDiv = document.getElementById('package-list');
+
+            // Call Python to get the filtered list of packages
+            let packages = await eel.search_packages(searchTerm)();
+
+            // Clear the old list
+            packageListDiv.innerHTML = '';
+
+            // Dynamically create a new checkbox for each search result
+            packages.forEach(pkg => {
+                packageListDiv.innerHTML += `
+                    <div>
+                        <input type="checkbox" id="${pkg.id}" value="${pkg.id}" class="package-checkbox">
+                        <label for="${pkg.id}">${pkg.name}</label>
+                        <p class="description">${pkg.description}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // This function is called when the "Start Install" button is clicked
+        async function startInstallation() {
+            // Get selected distro
+            const selectedDistro = document.querySelector('input[name="distro"]:checked').value;
+
+            // Get selected packages from the dynamically created checkboxes
+            const selectedPackages = [];
+            const checkboxes = document.querySelectorAll('.package-checkbox:checked');
+            checkboxes.forEach((checkbox) => {
+                selectedPackages.push(checkbox.value);
+            });
+
+            if (selectedPackages.length === 0) {
+                add_to_log("Warning: No packages selected.");
+                return;
+            }
+
+            // Call the Python function with the user's choices
+            await eel.run_installation(selectedDistro, selectedPackages)();
+        }
+    </script>
+</body>
+</html>
