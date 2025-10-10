@@ -31,25 +31,21 @@
     <pre id="log-output"></pre>
 
     <script>
-        // Expose this JavaScript function to Python for logging
+        // Make this function callable from Python
         eel.expose(add_to_log);
         function add_to_log(message) {
             const log = document.getElementById('log-output');
             log.textContent += message + '\n';
-            log.scrollTop = log.scrollHeight; // Auto-scroll to bottom
+            log.scrollTop = log.scrollHeight;
         }
 
-        // This function is called when the user types in the search bar
         async function updatePackageList(searchTerm) {
             const packageListDiv = document.getElementById('package-list');
 
-            // Call Python to get the filtered list of packages
+            // Call Python to filter packages
             let packages = await eel.search_packages(searchTerm)();
 
-            // Clear the old list
             packageListDiv.innerHTML = '';
-
-            // Dynamically create a new checkbox for each search result
             packages.forEach(pkg => {
                 packageListDiv.innerHTML += `
                     <div>
@@ -61,14 +57,11 @@
             });
         }
 
-        // This function is called when the "Start Install" button is clicked
         async function startInstallation() {
-            // Get selected distro
             const selectedDistro = document.querySelector('input[name="distro"]:checked').value;
-
-            // Get selected packages from the dynamically created checkboxes
             const selectedPackages = [];
             const checkboxes = document.querySelectorAll('.package-checkbox:checked');
+
             checkboxes.forEach((checkbox) => {
                 selectedPackages.push(checkbox.value);
             });
@@ -78,7 +71,7 @@
                 return;
             }
 
-            // Call the Python function with the user's choices
+            // Call Python to start the installation
             await eel.run_installation(selectedDistro, selectedPackages)();
         }
     </script>
